@@ -10,6 +10,9 @@ dependencies {
     implementation 'com.google.guava:guava'
     implementation 'com.alibaba:druid'
     implementation 'org.slf4j:log4j-over-slf4j'
+    implementation 'org.springdoc:springdoc-openapi-core'
+    implementation 'org.springdoc:springdoc-openapi-ui'
+    implementation 'org.apache.commons:commons-pool2'
     runtimeOnly 'mysql:mysql-connector-java'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {

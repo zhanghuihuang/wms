@@ -10,6 +10,8 @@ ext {
     guavaVersion = '29.0-jre'
     alibabaDruidVersion = '1.1.22'
     log4jOverSlf4jVersion = '1.7.30'
+    springDocOpenAPIVersion = '1.1.49'
+    springDocOpenAPIUIVersion = '1.4.2'
 }
 
 subprojects {
@@ -51,6 +53,8 @@ subprojects {
             dependency "com.alibaba:druid:${alibabaDruidVersion}"
             dependency "com.alibaba:druid-spring-boot-starter:${alibabaDruidVersion}"
             dependency "org.slf4j:log4j-over-slf4j:${log4jOverSlf4jVersion}"
+            dependency "org.springdoc:springdoc-openapi-core:${springDocOpenAPIVersion}"
+            dependency "org.springdoc:springdoc-openapi-ui:${springDocOpenAPIUIVersion}"
         }
     }
 

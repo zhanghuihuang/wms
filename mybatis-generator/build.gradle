@@ -1,0 +1,13 @@
+apply plugin: 'org.springframework.boot'
+
+dependencies {
+    implementation('com.baomidou:mybatis-plus-boot-starter') {
+        exclude group: 'com.zaxxer', module: 'HikariCP'
+    }
+    implementation 'com.baomidou:mybatis-plus-generator'
+    runtimeOnly 'mysql:mysql-connector-java'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+}

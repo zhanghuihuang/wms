@@ -1,19 +1,19 @@
 package com.zhanghh.wms.inventory.mapper;
 
-import com.zhanghh.wms.inventory.model.Inventory;
-import org.springframework.stereotype.Repository;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.zhanghh.wms.inventory.entity.Inventory;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
-@Repository
-public interface InventoryMapper {
-    int deleteByPrimaryKey(String product);
-
-    int insert(Inventory record);
-
-    int insertSelective(Inventory record);
-
-    Inventory selectByPrimaryKey(String product);
-
-    int updateByPrimaryKeySelective(Inventory record);
-
-    int updateByPrimaryKey(Inventory record);
+/**
+ * <p>
+ * Mapper 接口
+ * </p>
+ *
+ * @author zhanghuihuang
+ * @since 2020-07-06
+ */
+public interface InventoryMapper extends BaseMapper<Inventory> {
+    @Select("select * from t_wms_inventory where product = #{product}")
+    Inventory findByProduct(@Param("product") String product);
 }

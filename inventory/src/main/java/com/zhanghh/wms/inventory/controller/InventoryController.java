@@ -1,13 +1,11 @@
 package com.zhanghh.wms.inventory.controller;
 
-import com.zhanghh.wms.inventory.model.Inventory;
-import com.zhanghh.wms.inventory.service.InventoryService;
+import com.zhanghh.wms.inventory.entity.Inventory;
+import com.zhanghh.wms.inventory.service.IInventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author zhanghuihuang
@@ -19,21 +17,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/inventory")
 public class InventoryController {
-
     @Autowired
-    private InventoryService inventoryService;
-    @Autowired
-    private RedisTemplate redisTemplate;
+    @Qualifier("inventoryService")
+    private IInventoryService inventoryService;
 
-    @GetMapping("/{product}")
-    public Inventory getInventoryInfo(@PathVariable String product) {
-        return inventoryService.selectByPrimaryKey(product);
+    @GetMapping("/{id}")
+    public ResponseEntity queryInventory(@PathVariable Integer id) {
+        Inventory inventory = inventoryService.getById(id);
+        return ResponseEntity.ok(inventory);
     }
 
-    @GetMapping("/cache")
-    public Inventory getCacheInventoryInfo() {
-        Inventory inventory = inventoryService.selectByPrimaryKey("goods1");
-        redisTemplate.opsForValue().set("goods1", inventory);
-        return (Inventory) redisTemplate.opsForValue().get("goods1");
+    @PutMapping("/{id}/{quantity}")
+    public ResponseEntity queryInventory(@PathVariable Integer id, @PathVariable Integer quantity) {
+        Inventory inventory = inventoryService.getById(id);
+        inventory.setQuantity(inventory.getQuantity() + quantity);
+        inventoryService.updateById(inventory);
+        return ResponseEntity.ok(inventory);
     }
 }

@@ -1,50 +1,49 @@
 package com.zhanghh.wms.inventory.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.zhanghh.wms.inventory.api.InventoryDto;
+import com.zhanghh.wms.inventory.entity.Inventory;
 import com.zhanghh.wms.inventory.mapper.InventoryMapper;
-import com.zhanghh.wms.inventory.model.Inventory;
-import com.zhanghh.wms.inventory.service.InventoryService;
+import com.zhanghh.wms.inventory.service.IInventoryService;
+import org.apache.servicecomb.pack.omega.transaction.annotations.Compensable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
- * @author zhanghuihuang
- * @description <pre>
+ * <p>
+ * 服务实现类
+ * </p>
  *
- * </pre>
- * @since 2020/6/25 8:01 下午
+ * @author zhanghuihuang
+ * @since 2020-07-06
  */
-@Service
-public class InventoryServiceImpl implements InventoryService {
+@Service("inventoryService")
+public class InventoryServiceImpl extends ServiceImpl<InventoryMapper, Inventory> implements IInventoryService {
     @Autowired
     private InventoryMapper inventoryMapper;
 
     @Override
-    public int deleteByPrimaryKey(String product) {
-        return inventoryMapper.deleteByPrimaryKey(product);
+    @Transactional
+    @Compensable(compensationMethod = "cancelModifyInventory")
+    public void modifyInventory(InventoryDto inventoryDto) {
+        Inventory inventory = this.getById(inventoryDto.getId());
+        inventory.setQuantity(inventory.getQuantity() - inventoryDto.getQuantity());
+        this.updateById(inventory);
     }
 
     @Override
-    public int insert(Inventory record) {
-        return inventoryMapper.insert(record);
+    @Transactional
+    public void deduct(String commodityCode, int count) {
+        Inventory inventory = inventoryMapper.findByProduct(commodityCode);
+        inventory.setQuantity(inventory.getQuantity() - count);
+        this.updateById(inventory);
     }
 
-    @Override
-    public int insertSelective(Inventory record) {
-        return inventoryMapper.insertSelective(record);
-    }
-
-    @Override
-    public Inventory selectByPrimaryKey(String product) {
-        return inventoryMapper.selectByPrimaryKey(product);
-    }
-
-    @Override
-    public int updateByPrimaryKeySelective(Inventory record) {
-        return inventoryMapper.updateByPrimaryKeySelective(record);
-    }
-
-    @Override
-    public int updateByPrimaryKey(Inventory record) {
-        return inventoryMapper.updateByPrimaryKey(record);
+    @Transactional
+    public void cancelModifyInventory(InventoryDto inventoryDto) {
+        Inventory inventory = this.getById(inventoryDto.getId());
+        inventory.setQuantity(inventory.getQuantity() + inventoryDto.getQuantity());
+        this.updateById(inventory);
     }
 }

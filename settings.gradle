@@ -16,5 +16,19 @@ pluginManagement {
 }
 rootProject.name = 'wms'
 
+include 'wms-mybatis-generator'
+project(":wms-mybatis-generator").projectDir = file('mybatis-generator')
+include 'wms-account'
+project(":wms-account").projectDir = file('account')
+include 'wms-account-api'
+project(":wms-account-api").projectDir = file('account-api')
+include 'wms-business'
+project(":wms-business").projectDir = file('business')
 include 'wms-inventory'
 project(":wms-inventory").projectDir = file('inventory')
+include 'wms-inventory-api'
+project(":wms-inventory-api").projectDir = file('inventory-api')
+include 'wms-order'
+project(":wms-order").projectDir = file('order')
+include 'wms-order-api'
+project(":wms-order-api").projectDir = file('order-api')

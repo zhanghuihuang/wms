@@ -6,10 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
@@ -25,48 +23,6 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
  */
 @Configuration
 public class RedisConfiguration {
-    @Autowired
-    private Environment environment;
-
-    /**
-     * 配置lettuce连接池
-     *
-     * @return
-     */
-    /*@Bean
-    @ConfigurationProperties(prefix = "spring.redis.cluster.lettuce.pool")
-    public GenericObjectPoolConfig redisPool() {
-        return new GenericObjectPoolConfig();
-    }
-
-    *//**
-     * 配置第一个数据源的
-     *
-     * @return
-     *//*
-    @Bean("redisClusterConfig")
-    public RedisClusterConfiguration redisClusterConfig() {
-        Map<String, Object> source = new HashMap<>(8);
-        source.put("spring.redis.cluster.nodes", environment.getProperty("spring.redis.cluster.nodes"));
-        RedisClusterConfiguration redisClusterConfiguration;
-        redisClusterConfiguration = new RedisClusterConfiguration(new MapPropertySource("RedisClusterConfiguration", source));
-        redisClusterConfiguration.setPassword(environment.getProperty("spring.redis.password"));
-        return redisClusterConfiguration;
-    }
-
-    *//**
-     * 配置第一个数据源的连接工厂
-     * 这里注意：需要添加@Primary 指定bean的名称，目的是为了创建两个不同名称的LettuceConnectionFactory
-     *
-     * @param redisPool
-     * @param redisClusterConfig
-     * @return
-     *//*
-    @Bean
-    public RedisConnectionFactory lettuceConnectionFactory(GenericObjectPoolConfig redisPool, @Qualifier("redisClusterConfig") RedisClusterConfiguration redisClusterConfig) {
-        LettuceClientConfiguration clientConfiguration = LettucePoolingClientConfiguration.builder().poolConfig(redisPool).build();
-        return new LettuceConnectionFactory(redisClusterConfig, clientConfiguration);
-    }*/
 
     /**
      * 自定义redis序列化的机制,重新定义一个ObjectMapper.防止和MVC的冲突

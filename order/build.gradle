@@ -1,0 +1,30 @@
+apply plugin: 'org.springframework.boot'
+
+dependencies {
+    compile(project(":wms-account-api"))
+    compile(project(":wms-order-api"))
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation('com.baomidou:mybatis-plus-boot-starter') {
+        exclude group: 'com.zaxxer', module: 'HikariCP'
+    }
+    implementation 'com.baomidou:mybatis-plus-generator'
+    implementation 'com.google.guava:guava'
+    implementation 'com.alibaba:druid'
+    implementation 'org.slf4j:log4j-over-slf4j'
+    implementation 'org.springdoc:springdoc-openapi-core'
+    implementation 'org.springdoc:springdoc-openapi-ui'
+    implementation 'org.apache.commons:commons-pool2'
+    implementation 'com.alibaba:dubbo'
+    implementation 'org.modelmapper:modelmapper'
+    //集成servicecomb-pack分布式事务方案
+    implementation 'org.apache.servicecomb.pack:omega-spring-starter'
+    implementation 'org.apache.servicecomb.pack:omega-transport-dubbo'
+    //implementation 'org.apache.servicecomb.pack:omega-transport-resttemplate'
+    runtimeOnly 'mysql:mysql-connector-java'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+}
